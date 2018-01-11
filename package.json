@@ -1,0 +1,33 @@
+{
+  "name": "@korbiniankuhn/express-router",
+  "version": "0.0.1",
+  "description": "Create express routes dynamically and send descriptive 404 responses.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha \"./test/**/*.spec.js\"",
+    "coverage": "nyc --reporter=html mocha \"./test/**/*.spec.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KorbinianKuhn/express-router.git"
+  },
+  "keywords": [
+    "express",
+    "router",
+    "routing"
+  ],
+  "author": "Korbinian Kuhn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KorbinianKuhn/express-router/issues"
+  },
+  "homepage": "https://github.com/KorbinianKuhn/express-router#readme",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "mocha": "^4.1.0",
+    "nyc": "^11.4.1",
+    "should": "^13.2.0"
+  }
+}

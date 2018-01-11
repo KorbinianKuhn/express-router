@@ -16,6 +16,7 @@ module.exports = (app, routes, middleware, options = {}) => {
   switch (typeof middleware) {
     case 'object':
       options = middleware;
+      middleware = DEFAULT_MIDDLEWARE;
       break;
     case 'function':
       break;

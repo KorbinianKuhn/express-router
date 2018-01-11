@@ -28,7 +28,7 @@ const mapper = (app, routes, middleware, options, route) => {
 }
 exports.mapper = mapper;
 
-exports.router = (app, routes, middleware, options) => {
+exports.create = (app, routes, middleware, options) => {
   switch (typeof middleware) {
     case 'object':
       options = middleware;

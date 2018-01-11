@@ -1,34 +1,18 @@
+const helper = require('./helper');
 const _ = require('lodash');
 
 const DEFAULT_OPTIONS = {
-  asyncWrapper: true
+  asyncWrapper: true,
+  verbose: null
 }
 
-const DEFAULT_MIDDLEWARE = (req, res, next) => {
-  next();
-}
+const DEFAULT_MIDDLEWARE = helper.DEFAULT_MIDDLEWARE;
+const wrap = helper.wrap;
+const transform = helper.transform;
 
-const wrap = fn => (req, res, next) => {
-  Promise.resolve(fn(req, res, next)).catch(next);
-};
+module.exports = (app, routes, middleware, options = {}) => {
+  const endpoints = transform(routes);
 
-const mapper = (app, routes, middleware, options, route) => {
-  const tempRoute = route || '';
-  for (const key in routes) {
-    switch (typeof routes[key]) {
-      case 'object':
-        mapper(app, routes[key], middleware, options, tempRoute + key);
-        break;
-      case 'function':
-        const fn = options.asyncWrapper ? wrap(routes[key]) : routes[key];
-        app[key](tempRoute, middleware, fn);
-        break;
-    }
-  }
-}
-exports.mapper = mapper;
-
-exports.create = (app, routes, middleware, options) => {
   switch (typeof middleware) {
     case 'object':
       options = middleware;
@@ -40,9 +24,17 @@ exports.create = (app, routes, middleware, options) => {
       break;
   }
 
-  if (!options) {
-    options = DEFAULT_OPTIONS;
-  }
+  options = _.defaults(options, DEFAULT_OPTIONS);
 
-  mapper(app, routes, middleware, options);
+  if (options.verbose) options.verbose(`express-router: add routes`);
+
+  for (const endpoint in endpoints) {
+    for (const method in endpoints[endpoint]) {
+      const controller = endpoints[endpoint][method];
+      const fn = options.asyncWrapper ? wrap(controller) : controller;
+      app[method](endpoint, middleware, fn);
+
+      if (options.verbose) options.verbose(`${endpoint} ${_.upperCase(method)}`);
+    }
+  }
 }

@@ -35,9 +35,9 @@ describe('middleware()', () => {
     res._status.should.equal(404);
     res._json.should.deepEqual({
       error: 'Not found.',
-      requested: 'GET /invalid/route',
+      requested: '/invalid/route (GET)',
       valid: '',
-      endpoints: ['GET /a']
+      endpoints: ['/a (GET)']
     });
   });
 
@@ -67,9 +67,9 @@ describe('middleware()', () => {
     res._status.should.equal(404);
     res._json.should.deepEqual({
       error: 'Not found.',
-      requested: 'GET /a/b',
+      requested: '/a/b (GET)',
       valid: '/a',
-      endpoints: ['GET /a', 'GET /a/c', 'GET /a/d/:variable']
+      endpoints: ['/a (GET)', '/a/c (GET)', '/a/d/:variable (GET)']
     });
   });
 
@@ -98,9 +98,9 @@ describe('middleware()', () => {
     res._status.should.equal(404);
     res._json.should.deepEqual({
       error: 'Not found.',
-      requested: `GET ''`,
+      requested: `'' (GET)`,
       valid: '',
-      endpoints: ['GET,POST /a', 'PATCH /a/b', 'DELETE,PUT /c']
+      endpoints: ['/a (GET,POST)', '/a/b (PATCH)', '/c (DELETE,PUT)']
     });
   });
 
@@ -142,9 +142,9 @@ describe('middleware()', () => {
     })(req, res, (err) => {
       err.message.should.equal('Not found.');
       err.details.should.deepEqual({
-        requested: 'GET /invalid/route',
+        requested: '/invalid/route (GET)',
         valid: '',
-        endpoints: ['GET /a']
+        endpoints: ['/a (GET)']
       });
     });
   });

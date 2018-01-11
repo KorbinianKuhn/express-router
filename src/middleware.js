@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const transform = require('./transform');
+const transform = require('./helper').transform;
 const NotFoundError = require('./error');
 
 const DEFAULTS = {
@@ -42,10 +42,10 @@ module.exports = (routes, options) => {
     }
 
     const error = options.message;
-    const requested = req.url === '' ? `GET ''` : `${req.method} ${req.url}`;
+    const requested = req.url === '' ? `'' (GET)` : `${req.url} (${req.method})`;
     const valid = validRoute;
     const endpoints = possibleRoutes.map(o => {
-      return `${_.keys(o.methods).map(m => _.upperCase(m)).join(',')} ${o.route}`
+      return `${o.route} (${_.keys(o.methods).map(m => _.upperCase(m)).join(',')})`
     })
 
     res.status(404).json({

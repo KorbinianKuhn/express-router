@@ -2,7 +2,16 @@ const _ = require('lodash');
 
 const METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 
-module.exports = transform = (routes) => {
+exports.DEFAULT_MIDDLEWARE = (req, res, next) => {
+  next();
+}
+
+exports.wrap = fn => (req, res, next) => {
+  Promise.resolve(fn(req, res, next)).catch(next);
+};
+
+
+exports.transform = (routes) => {
   if (!_.isPlainObject(routes)) {
     throw new Error('routes is not an object.');
   }

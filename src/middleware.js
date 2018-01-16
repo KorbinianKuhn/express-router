@@ -4,11 +4,14 @@ const NotFoundError = require('./error');
 
 const DEFAULTS = {
   next: false,
-  message: 'Not found.'
+  message: 'Not found.',
+  strict: true
 }
 
-module.exports = (routes, options) => {
-  const transformedRoutes = transform(routes);
+module.exports = (routes, options = {}) => {
+  options = _.defaults(options, DEFAULTS);
+
+  const transformedRoutes = transform(routes, options);
   const allRoutes = [];
   for (const key in transformedRoutes) {
     allRoutes.push({
@@ -17,8 +20,6 @@ module.exports = (routes, options) => {
       methods: transformedRoutes[key]
     })
   }
-
-  options = _.defaults(options, DEFAULTS);
 
   const middleware = (req, res, next) => {
     const params = _.compact(req.url.split('/'));

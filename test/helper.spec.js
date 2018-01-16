@@ -105,5 +105,30 @@ describe('helper()', () => {
         })
       }).should.throw(`'test' has no leading slash.`);
     });
+
+    it('invalid characters should throw', () => {
+      (() => {
+        helper.transform({
+          '/te.st': {
+            get: () => {}
+          }
+        }, {
+          strict: true
+        })
+      }).should.throw(`'/te.st' contains other characters than (a-z, 0-9, -, /, :).`);
+    });
+
+    it('invalid characters should throw', () => {
+      (() => {
+        helper.transform({
+          '/TEST': {
+            get: () => {}
+          }
+        }, {
+          strict: true
+        })
+      }).should.throw(`'/TEST' contains other characters than (a-z, 0-9, -, /, :).`);
+    });
+
   });
 });

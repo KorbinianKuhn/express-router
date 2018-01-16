@@ -66,6 +66,7 @@ options
 
 - `asyncWrapper (boolean)`: Wraps an async middleware around the controller function that catches exceptions and nexts them. Default true.
 - `verbose (function)`: Set a function e.g. console.log to see outputs for all created routes. Default null.
+- `strict (boolean)`: Only allow routes that contain lowercase letters, numbers or dashes. Default true.
 
 ### `middleware(routes, options)`
 
@@ -73,8 +74,9 @@ options
 
 options
 
-- `next (boolean)`: Next a NotFoundError after sending response. Default true.
+- `next (boolean)`: Next a NotFoundError after sending response. Default false.
 - `message (string)`: Set a custom message. Default 'Not found.'
+- `strict (boolean)`: Only allow routes that contain lowercase letters, numbers or dashes. Default true.
 
 ## Testing
 

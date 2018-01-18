@@ -12,9 +12,6 @@ const wrap = helper.wrap;
 const transform = helper.transform;
 
 module.exports = (app, routes, middleware, options = {}) => {
-  options = _.defaults(options, DEFAULT_OPTIONS);
-
-  const endpoints = transform(routes, options);
 
   switch (typeof middleware) {
     case 'object':
@@ -27,6 +24,9 @@ module.exports = (app, routes, middleware, options = {}) => {
       middleware = DEFAULT_MIDDLEWARE;
       break;
   }
+
+  const endpoints = transform(routes, options);
+  options = _.defaults(options, DEFAULT_OPTIONS);
 
   if (options.verbose) options.verbose(`express-router: add routes`);
 

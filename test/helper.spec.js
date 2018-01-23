@@ -115,7 +115,7 @@ describe('helper()', () => {
         }, {
           strict: true
         })
-      }).should.throw(`'/te.st' contains other characters than (a-z, 0-9, -, /, :).`);
+      }).should.throw(`'/te.st' contains other characters than (a-z, 0-9, -).`);
     });
 
     it('invalid characters should throw', () => {
@@ -127,8 +127,19 @@ describe('helper()', () => {
         }, {
           strict: true
         })
-      }).should.throw(`'/TEST' contains other characters than (a-z, 0-9, -, /, :).`);
+      }).should.throw(`'/TEST' contains other characters than (a-z, 0-9, -).`);
     });
 
+    it('invalid characters should throw', () => {
+      (() => {
+        helper.transform({
+          '/:test-b': {
+            get: () => {}
+          }
+        }, {
+          strict: true
+        })
+      }).should.throw(`'/:test-b' contains other characters than (a-z, A-Z, 0-9, _).`);
+    });
   });
 });

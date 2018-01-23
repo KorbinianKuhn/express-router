@@ -27,10 +27,6 @@ exports.transform = (routes, options = {}) => {
         throw new Error(`route '${route}' has an empty object.`);
       } else {
         for (const key in routes) {
-          if (options.strict && key.match(/^[a-z0-9-:\/]+$/) === null) {
-            throw new Error(`'${key}' contains other characters than (a-z, 0-9, -, /, :).`);
-          }
-
           if (METHODS.indexOf(key) !== -1) {
             if (!_.isFunction(routes[key])) {
               throw new Error(`endpoint '${route} ${_.upperCase(key)}' has no function.`);
@@ -45,6 +41,19 @@ exports.transform = (routes, options = {}) => {
               }
             }
           } else if (_.startsWith(key, '/')) {
+            if (options.strict) {
+              const parts = key.split('/');
+              parts.shift();
+              for (const part of parts) {
+                if (_.startsWith(part, ':')) {
+                  if (part.match(/^:\w+$/) === null) {
+                    throw new Error(`'/${part}' contains other characters than (a-z, A-Z, 0-9, _).`);
+                  }
+                } else if (part.match(/^[a-z0-9-\/]+$/) === null) {
+                  throw new Error(`'/${part}' contains other characters than (a-z, 0-9, -).`);
+                }
+              }
+            }
             transformRecursive(routes[key], `${route}${key}`, transformed, options)
           } else {
             throw new Error(`'${key}' has no leading slash.`);

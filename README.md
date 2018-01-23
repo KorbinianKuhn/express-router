@@ -1,4 +1,4 @@
-# Express input validator
+# Express router
 
 [![Travis](https://img.shields.io/travis/KorbinianKuhn/express-router.svg)](https://travis-ci.org/KorbinianKuhn/express-router/builds)
 [![Coverage Status](https://coveralls.io/repos/github/KorbinianKuhn/express-router/badge.svg?branch=master)](https://coveralls.io/github/KorbinianKuhn/express-router?branch=master)

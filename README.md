@@ -1,4 +1,5 @@
-# Express input validator [![Travis](https://img.shields.io/travis/KorbinianKuhn/express-router.svg)](https://travis-ci.org/KorbinianKuhn/express-router/builds)  [![standard](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](http://standardjs.com/)
+# Express input validator
+[![Travis](https://img.shields.io/travis/KorbinianKuhn/express-router.svg)](https://travis-ci.org/KorbinianKuhn/express-router/builds) [![Coverage Status](https://coveralls.io/repos/github/KorbinianKuhn/express-router/badge.svg?branch=master)](https://coveralls.io/github/KorbinianKuhn/express-router?branch=master) [![dependencies](https://david-dm.org/KorbinianKuhn/express-router.svg)]() [![standard](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](http://standardjs.com/) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
 This package helps to add routes dynamically to an express REST API and send automated 404 responses with endpoint suggestions. The routes and controllers can easily be described with an object. It also validates the given object against duplicate endpoints and missing controller functions.
 

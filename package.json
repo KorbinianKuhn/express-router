@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha \"./test/**/*.spec.js\"",
-    "coverage": "nyc --reporter=html mocha \"./test/**/*.spec.js\""
+    "coverage": "nyc --reporter=html mocha \"./test/**/*.spec.js\"",
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "lodash": "^4.17.4"
   },
   "devDependencies": {
+    "coveralls": "^3.0.0",
     "mocha": "^4.1.0",
     "nyc": "^11.4.1",
     "should": "^13.2.0"

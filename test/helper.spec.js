@@ -142,4 +142,24 @@ describe('helper()', () => {
       }).should.throw(`'/:test-b' contains other characters than (a-z, A-Z, 0-9, _).`);
     });
   });
+
+  it('default middleware should next', () => {
+    let executed = false;
+    helper.DEFAULT_MIDDLEWARE(null, null, () => {
+      executed = true;
+    });
+    executed.should.be.ok();
+  });
+
+  it('wrap function should catch exception', async () => {
+    const throwFunction = async (req, res, next) => {
+      throw 'test';
+    }
+    let error = null;
+    await helper.wrap(throwFunction)(null, null, (err) => {
+      error = err;
+    });
+    error.should.equal('test');
+  });
+
 });

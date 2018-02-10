@@ -24,12 +24,12 @@
   },
   "homepage": "https://github.com/KorbinianKuhn/express-router#readme",
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.5"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
-    "mocha": "^4.1.0",
+    "mocha": "^5.0.0",
     "nyc": "^11.4.1",
-    "should": "^13.2.0"
+    "should": "^13.2.1"
   }
 }

@@ -1,11 +1,13 @@
 # Express router
 
-[![Travis](https://img.shields.io/travis/KorbinianKuhn/express-router.svg)](https://travis-ci.org/KorbinianKuhn/express-router/builds)
-[![Coverage Status](https://coveralls.io/repos/github/KorbinianKuhn/express-router/badge.svg?branch=master)](https://coveralls.io/github/KorbinianKuhn/express-router?branch=master)
-[![Known Vulnerabilities](https://snyk.io/test/github/KorbinianKuhn/express-router/badge.svg)](https://snyk.io/test/github/KorbinianKuhn/express-router) 
-[![dependencies](https://david-dm.org/KorbinianKuhn/express-router.svg)]()
-[![npm](https://img.shields.io/npm/dt/@korbiniankuhn/express-router.svg)](https://www.npmjs.com/package/@korbiniankuhn/express-router)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+[![Travis](https://img.shields.io/travis/KorbinianKuhn/express-router.svg?style=flat-square)](https://travis-ci.org/KorbinianKuhn/express-router/builds)
+[![Coverage](http://img.shields.io/coveralls/KorbinianKuhn/express-router.svg?style=flat-square&branch=master)](https://coveralls.io/r/KorbinianKuhn/express-router)
+[![Known Vulnerabilities](https://snyk.io/test/github/KorbinianKuhn/express-router/badge.svg?style=flat-square)](https://snyk.io/test/github/KorbinianKuhn/express-router)
+[![Dependencies](https://img.shields.io/david/KorbinianKuhn/express-router.svg?style=flat-square)](https://david-dm.org/KorbinianKuhn/express-router)
+[![Dev Dependencies](https://img.shields.io/david/dev/KorbinianKuhn/express-router.svg?style=flat-square)](https://david-dm.org/KorbinianKuhn/express-router)
+[![npm](https://img.shields.io/npm/dt/@korbiniankuhn/express-router.svg?style=flat-square)](https://www.npmjs.com/package/@korbiniankuhn/express-router)
+[![npm-version](https://img.shields.io/npm/v/@korbiniankuhn/express-router.svg?style=flat-square)](https://www.npmjs.com/package/@korbiniankuhn/express-router)
+![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)
 
 This package helps to add routes dynamically to an express REST API and send automated 404 responses with endpoint suggestions. The routes and controllers can easily be described with an object. It also validates the given object against duplicate endpoints and missing controller functions.
 

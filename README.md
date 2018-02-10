@@ -7,7 +7,7 @@
 [![Dev Dependencies](https://img.shields.io/david/dev/KorbinianKuhn/express-router.svg?style=flat-square)](https://david-dm.org/KorbinianKuhn/express-router)
 [![npm](https://img.shields.io/npm/dt/@korbiniankuhn/express-router.svg?style=flat-square)](https://www.npmjs.com/package/@korbiniankuhn/express-router)
 [![npm-version](https://img.shields.io/npm/v/@korbiniankuhn/express-router.svg?style=flat-square)](https://www.npmjs.com/package/@korbiniankuhn/express-router)
-![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)
+![license](https://img.shields.io/github/license/KorbinianKuhn/express-router.svg?style=flat-square)
 
 This package helps to add routes dynamically to an express REST API and send automated 404 responses with endpoint suggestions. The routes and controllers can easily be described with an object. It also validates the given object against duplicate endpoints and missing controller functions.
 

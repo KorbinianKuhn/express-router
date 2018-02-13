@@ -77,6 +77,40 @@ describe('middleware()', () => {
     });
   });
 
+  it('wrong method should return MethodNotAllowed', () => {
+    const routes = {
+      '/a': {
+        get: () => {},
+        patch: () => {},
+        '/c': {
+          get: () => {}
+        },
+        '/d/:variable': {
+          get: () => {}
+        }
+      },
+      '/b': {
+        get: () => {}
+      }
+    }
+    const req = {
+      url: '/a',
+      method: 'POST'
+    }
+    const res = new Response();
+    const next = () => {};
+
+    middleware(routes)(req, res, next);
+    res._status.should.equal(405);
+    res._json.should.deepEqual({
+      error: true,
+      name: 'method_not_allowed',
+      message: 'Method not allowed.',
+      requested: 'POST',
+      allowed: 'GET,PATCH'
+    });
+  });
+
   it('should return multiple methods in suggestions', () => {
     const routes = {
       '/a': {
@@ -124,10 +158,12 @@ describe('middleware()', () => {
     const next = () => {};
 
     middleware(routes, {
-      message: 'Custom message.'
+      messageNotFound: 'Custom message.',
+      nameNotFound: 'custom_name'
     })(req, res, next);
     res._status.should.equal(404);
-    res._json.should.have.property('message', 'Custom message.')
+    res._json.should.have.property('message', 'Custom message.');
+    res._json.should.have.property('name', 'custom_name');
   });
 
   it('should next error', () => {
@@ -151,6 +187,30 @@ describe('middleware()', () => {
         requested: '/invalid/route (GET)',
         valid: '',
         endpoints: ['/a (GET)']
+      });
+    });
+  });
+
+  it('should next method not allowed error', () => {
+    const routes = {
+      '/a': {
+        get: () => {}
+      }
+    }
+    const req = {
+      url: '/a',
+      method: 'POST'
+    }
+    const res = new Response();
+    const next = () => {};
+
+    middleware(routes, {
+      next: true
+    })(req, res, (err) => {
+      err.message.should.equal('Method not allowed.');
+      err.details.should.deepEqual({
+        requested: 'POST',
+        allowed: 'GET'
       });
     });
   });

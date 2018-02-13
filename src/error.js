@@ -6,4 +6,14 @@ class NotFoundError extends Error {
   }
 }
 
-module.exports = NotFoundError;
+exports.NotFoundError = NotFoundError;
+
+class MethodNotAllowedError extends Error {
+  constructor(message, details) {
+    super(message);
+    this.name = 'MethodNotAllowedError';
+    this.details = details;
+  }
+}
+
+exports.MethodNotAllowedError = MethodNotAllowedError;

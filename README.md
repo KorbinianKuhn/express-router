@@ -9,7 +9,7 @@
 [![npm-version](https://img.shields.io/npm/v/@korbiniankuhn/express-router.svg?style=flat-square)](https://www.npmjs.com/package/@korbiniankuhn/express-router)
 ![license](https://img.shields.io/github/license/KorbinianKuhn/express-router.svg?style=flat-square)
 
-This package helps to add routes dynamically to an express REST API and send automated 404 responses with endpoint suggestions. The routes and controllers can easily be described with an object. It also validates the given object against duplicate endpoints and missing controller functions.
+Build REST API endpoints for Express dynamically. The middleware sends automated 404 and 405 responses with endpoint / allowed methods suggestions. The routes and controllers can easily be described with an object. It also validates the given object against duplicate endpoints and missing controller functions.
 
 ## Installation
 
@@ -57,7 +57,7 @@ const app = express();
 router.create(app, routes);
 ```
 
-Add the 404 middleware
+Add the 404, 405 middleware
 
 ``` javascript
 app.use(router.middleware(routes));
@@ -83,8 +83,11 @@ options
 
 options
 
-- `next (boolean)`: Next a NotFoundError after sending response. Default false.
-- `message (string)`: Set a custom message. Default 'Not found.'
+- `next (boolean)`: Next a NotFoundError or MethodNotAllowedError after sending response. Default false.
+- `messageNotFound (string)`: Set a custom message for 404 errors. Default 'Not found.'
+- `nameNotFound (string)`: Set a custom error name for 404 errors. Default 'not_found'
+- `messageMethodNotAllowed (string)`: Set a custom message for 405 errors. Default 'Method not allowed.'
+- `nameMethodNotAllowed (string)`: Set a custom error name for 405 errors. Default 'method_not_allowed'
 - `strict (boolean)`: Only allow routes that contain lowercase letters, numbers or dashes. Default true.
 
 ## Testing

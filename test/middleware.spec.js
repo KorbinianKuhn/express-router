@@ -34,7 +34,9 @@ describe('middleware()', () => {
     middleware(routes)(req, res, next);
     res._status.should.equal(404);
     res._json.should.deepEqual({
-      error: 'Not found.',
+      error: true,
+      name: 'not_found',
+      message: 'Not found.',
       requested: '/invalid/route (GET)',
       valid: '',
       endpoints: ['/a (GET)']
@@ -66,7 +68,9 @@ describe('middleware()', () => {
     middleware(routes)(req, res, next);
     res._status.should.equal(404);
     res._json.should.deepEqual({
-      error: 'Not found.',
+      error: true,
+      name: 'not_found',
+      message: 'Not found.',
       requested: '/a/b (GET)',
       valid: '/a',
       endpoints: ['/a (GET)', '/a/c (GET)', '/a/d/:variable (GET)']
@@ -97,7 +101,9 @@ describe('middleware()', () => {
     middleware(routes)(req, res, next);
     res._status.should.equal(404);
     res._json.should.deepEqual({
-      error: 'Not found.',
+      error: true,
+      name: 'not_found',
+      message: 'Not found.',
       requested: `'' (GET)`,
       valid: '',
       endpoints: ['/a (GET,POST)', '/a/b (PATCH)', '/c (DELETE,PUT)']
@@ -121,7 +127,7 @@ describe('middleware()', () => {
       message: 'Custom message.'
     })(req, res, next);
     res._status.should.equal(404);
-    res._json.should.have.property('error', 'Custom message.')
+    res._json.should.have.property('message', 'Custom message.')
   });
 
   it('should next error', () => {

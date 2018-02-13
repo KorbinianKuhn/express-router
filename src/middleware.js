@@ -5,6 +5,7 @@ const NotFoundError = require('./error');
 const DEFAULTS = {
   next: false,
   message: 'Not found.',
+  name: 'not_found',
   strict: true
 }
 
@@ -42,7 +43,8 @@ module.exports = (routes, options = {}) => {
       }
     }
 
-    const error = options.message;
+    const message = options.message;
+    const name = options.name;
     const requested = req.url === '' ? `'' (GET)` : `${req.url} (${req.method})`;
     const valid = validRoute;
     const endpoints = possibleRoutes.map(o => {
@@ -50,14 +52,16 @@ module.exports = (routes, options = {}) => {
     })
 
     res.status(404).json({
-      error,
+      error: true,
+      message,
+      name,
       requested,
       valid,
       endpoints
     });
 
     if (options.next) {
-      next(new NotFoundError(error, {
+      next(new NotFoundError(message, {
         requested,
         valid,
         endpoints

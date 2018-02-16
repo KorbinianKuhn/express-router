@@ -1,42 +1,75 @@
 const helper = require('./helper');
 const _ = require('lodash');
+const createFunction = require('./create');
+const middlewareFunction = require('./middleware');
+const defaults = require('./defaults');
 
-const DEFAULT_OPTIONS = {
-  asyncWrapper: true,
-  verbose: null,
-  strict: true
-}
+const _private = Symbol('Private variables');
 
-const DEFAULT_MIDDLEWARE = helper.DEFAULT_MIDDLEWARE;
-const wrap = helper.wrap;
-const transform = helper.transform;
-
-module.exports = (app, routes, middleware, options = {}) => {
-
-  switch (typeof middleware) {
-    case 'object':
-      options = middleware;
-      middleware = DEFAULT_MIDDLEWARE;
-      break;
-    case 'function':
-      break;
-    default:
-      middleware = DEFAULT_MIDDLEWARE;
-      break;
+class Router {
+  constructor(routes, options = {}) {
+    this[_private] = {
+      metadata: {},
+      errors: []
+    };
+    this[_private].routes = helper.transform(routes, options);
   }
 
-  const endpoints = transform(routes, options);
-  options = _.defaults(options, DEFAULT_OPTIONS);
-
-  if (options.verbose) options.verbose(`express-router: add routes`);
-
-  for (const endpoint in endpoints) {
-    for (const method in endpoints[endpoint]) {
-      const controller = endpoints[endpoint][method];
-      const fn = options.asyncWrapper ? wrap(controller) : controller;
-      app[method](endpoint, middleware, fn);
-
-      if (options.verbose) options.verbose(`${endpoint} ${_.upperCase(method)}`);
+  create(app, middleware, options = {}) {
+    switch (typeof middleware) {
+      case 'object':
+        options = middleware;
+        middleware = defaults.middleware;
+        break;
+      case 'function':
+        break;
+      default:
+        middleware = defaults.middleware;
+        break;
     }
+    createFunction(app, this[_private].routes, middleware, _.defaults(options, defaults.ROUTING_OPTIONS));
+  }
+
+  middleware(options = {}) {
+    return middlewareFunction(this[_private].routes, _.defaults(options, defaults.MIDDLEWARE_OPTIONS));
+  }
+
+  metadata(object) {
+    _.assign(this[_private].metadata, object);
+    return this;
+  }
+
+  errors(errors) {
+    this[_private].errors.push(...errors);
+    return this;
+  }
+
+  toObject(options = {}) {
+    const object = {
+      routes: []
+    };
+    _.assign(object, this[_private].metadata);
+
+    const endpointOptions = _.defaults(options);
+
+    if (this[_private].errors.length > 0) {
+      endpointOptions.errors = this[_private].errors;
+    }
+
+    for (const route in this[_private].routes) {
+      for (const method in this[_private].routes[route]) {
+        const endpoint = this[_private].routes[route][method];
+        const routeObject = {
+          uri: route,
+          method,
+        };
+        _.assign(routeObject, endpoint.toObject(endpointOptions));
+        object.routes.push(routeObject);
+      }
+    }
+    return object;
   }
 }
+
+const RouterFactory = (routes, options = {}) => new Router(routes, options);
+exports.RouterFactory = RouterFactory;

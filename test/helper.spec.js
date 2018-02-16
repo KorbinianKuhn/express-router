@@ -1,5 +1,6 @@
 const should = require('should');
 const helper = require('../src/helper');
+const { EndpointFactory } = require('../src/endpoint');
 
 describe('helper()', () => {
   describe('transform()', () => {
@@ -7,32 +8,32 @@ describe('helper()', () => {
       const fn = () => {};
       const routes = {
         '/a': {
-          get: fn
+          get: EndpointFactory(fn)
         },
         '/b/c': {
-          put: fn
+          put: EndpointFactory(fn)
         },
         '/c': {
-          post: fn,
+          post: EndpointFactory(fn),
           '/d': {
-            delete: fn,
-            patch: fn
+            delete: EndpointFactory(fn),
+            patch: EndpointFactory(fn)
           }
         }
-      }
+      };
       const expected = {
         '/a': {
-          get: fn
+          get: EndpointFactory(fn)
         },
         '/b/c': {
-          put: fn
+          put: EndpointFactory(fn)
         },
         '/c': {
-          post: fn
+          post: EndpointFactory(fn)
         },
         '/c/d': {
-          delete: fn,
-          patch: fn
+          delete: EndpointFactory(fn),
+          patch: EndpointFactory(fn)
         }
       };
       const actual = helper.transform(routes);
@@ -41,25 +42,25 @@ describe('helper()', () => {
 
     it('invalid object type should throw', () => {
       (() => {
-        helper.transform([])
+        helper.transform([]);
       }).should.throw('routes is not an object.');
 
       (() => {
         helper.transform({
           '/a': null
-        })
+        });
       }).should.throw(`route '/a' is not an object.`);
     });
 
     it('empty object should throw', () => {
       (() => {
-        helper.transform({})
+        helper.transform({});
       }).should.throw('routes is an empty object.');
 
       (() => {
         helper.transform({
           '/a': {}
-        })
+        });
       }).should.throw(`route '/a' has an empty object.`);
     });
 
@@ -69,16 +70,16 @@ describe('helper()', () => {
           '/a': {
             get: null
           }
-        })
-      }).should.throw(`endpoint '/a GET' has no function.`);
+        });
+      }).should.throw(`endpoint '/a GET' has no function or endpoint object.`);
 
       (() => {
         helper.transform({
           '/a': {
             get: {}
           }
-        })
-      }).should.throw(`endpoint '/a GET' has no function.`);
+        });
+      }).should.throw(`endpoint '/a GET' has no function or endpoint object.`);
     });
 
     it('duplicate endpoint should throw', () => {
@@ -92,17 +93,17 @@ describe('helper()', () => {
           '/a/b': {
             get: () => {}
           }
-        })
+        });
       }).should.throw(`endpoint '/a/b' is a duplicate.`);
     });
 
     it('key without leading slash should throw', () => {
       (() => {
         helper.transform({
-          'test': {
+          test: {
             get: () => {}
           }
-        })
+        });
       }).should.throw(`'test' has no leading slash.`);
     });
 
@@ -114,7 +115,7 @@ describe('helper()', () => {
           }
         }, {
           strict: true
-        })
+        });
       }).should.throw(`'/te.st' contains other characters than (a-z, 0-9, -).`);
     });
 
@@ -126,7 +127,7 @@ describe('helper()', () => {
           }
         }, {
           strict: true
-        })
+        });
       }).should.throw(`'/TEST' contains other characters than (a-z, 0-9, -).`);
     });
 
@@ -138,28 +139,8 @@ describe('helper()', () => {
           }
         }, {
           strict: true
-        })
+        });
       }).should.throw(`'/:test-b' contains other characters than (a-z, A-Z, 0-9, _).`);
     });
   });
-
-  it('default middleware should next', () => {
-    let executed = false;
-    helper.DEFAULT_MIDDLEWARE(null, null, () => {
-      executed = true;
-    });
-    executed.should.be.ok();
-  });
-
-  it('wrap function should catch exception', async () => {
-    const throwFunction = async (req, res, next) => {
-      throw 'test';
-    }
-    let error = null;
-    await helper.wrap(throwFunction)(null, null, (err) => {
-      error = err;
-    });
-    error.should.equal('test');
-  });
-
 });

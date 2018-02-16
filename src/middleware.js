@@ -1,31 +1,17 @@
 const _ = require('lodash');
-const transform = require('./helper').transform;
 const {
   NotFoundError,
   MethodNotAllowedError
 } = require('./error');
 
-const DEFAULTS = {
-  next: false,
-  messageNotFound: 'Not found.',
-  nameNotFound: 'not_found',
-  messageMethodNotAllowed: 'Method not allowed.',
-  nameMethodNotAllowed: 'method_not_allowed',
-  strict: true
-}
-
 module.exports = (routes, options = {}) => {
-  options = _.defaults(options, DEFAULTS);
-
-  const transformedRoutes = transform(routes, options);
-
   const allRoutes = [];
-  for (const key in transformedRoutes) {
+  for (const key in routes) {
     allRoutes.push({
       route: key,
       params: _.compact(key.split('/')),
-      methods: transformedRoutes[key]
-    })
+      methods: routes[key]
+    });
   }
 
   const middleware = (req, res, next) => {
@@ -51,9 +37,7 @@ module.exports = (routes, options = {}) => {
       }
 
       if (i === length - 1) {
-        possibleMethods = _.flatten(possibleRoutes.filter(o => o.params.length === 0).map(o => {
-          return _.keys(o.methods).map(key => key.toUpperCase())
-        }));
+        possibleMethods = _.flatten(possibleRoutes.filter(o => o.params.length === 0).map(o => _.keys(o.methods).map(key => key.toUpperCase())));
       }
     }
 
@@ -61,9 +45,7 @@ module.exports = (routes, options = {}) => {
       const requested = req.url === '' ? `'' (GET)` : `${req.url} (${req.method})`;
       const message = options.messageNotFound;
       const valid = validRoute;
-      const endpoints = possibleRoutes.map(o => {
-        return `${o.route} (${_.keys(o.methods).map(m => _.upperCase(m)).join(',')})`
-      });
+      const endpoints = possibleRoutes.map(o => `${o.route} (${_.keys(o.methods).map(m => _.upperCase(m)).join(',')})`);
 
       res.status(404).json({
         error: true,
@@ -101,6 +83,6 @@ module.exports = (routes, options = {}) => {
         }));
       }
     }
-  }
+  };
   return middleware;
-}
+};

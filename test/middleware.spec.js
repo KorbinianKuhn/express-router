@@ -1,21 +1,6 @@
 const should = require('should');
-const middleware = require('../src/middleware');
-
-class Response {
-  constructor() {
-
-  }
-
-  status(number) {
-    this._status = number;
-    return this;
-  }
-
-  json(object) {
-    this._json = object;
-    return object;
-  }
-}
+const utils = require('./utils');
+const Router = require('../src/router').RouterFactory;
 
 describe('middleware()', () => {
   it('complete invalid route should return empty valid part', () => {
@@ -23,15 +8,15 @@ describe('middleware()', () => {
       '/a': {
         get: () => {}
       }
-    }
+    };
     const req = {
       url: '/invalid/route',
       method: 'GET'
-    }
-    const res = new Response();
+    };
+    const res = utils.Response();
     const next = () => {};
 
-    middleware(routes)(req, res, next);
+    Router(routes).middleware()(req, res, next);
     res._status.should.equal(404);
     res._json.should.deepEqual({
       error: true,
@@ -57,15 +42,15 @@ describe('middleware()', () => {
       '/b': {
         get: () => {}
       }
-    }
+    };
     const req = {
       url: '/a/b',
       method: 'GET'
-    }
-    const res = new Response();
+    };
+    const res = utils.Response();
     const next = () => {};
 
-    middleware(routes)(req, res, next);
+    Router(routes).middleware()(req, res, next);
     res._status.should.equal(404);
     res._json.should.deepEqual({
       error: true,
@@ -92,15 +77,15 @@ describe('middleware()', () => {
       '/b': {
         get: () => {}
       }
-    }
+    };
     const req = {
       url: '/a',
       method: 'POST'
-    }
-    const res = new Response();
+    };
+    const res = utils.Response();
     const next = () => {};
 
-    middleware(routes)(req, res, next);
+    Router(routes).middleware()(req, res, next);
     res._status.should.equal(405);
     res._json.should.deepEqual({
       error: true,
@@ -124,15 +109,15 @@ describe('middleware()', () => {
         delete: () => {},
         put: () => {}
       }
-    }
+    };
     const req = {
       url: '',
       method: 'GET'
-    }
-    const res = new Response();
+    };
+    const res = utils.Response();
     const next = () => {};
 
-    middleware(routes)(req, res, next);
+    Router(routes).middleware()(req, res, next);
     res._status.should.equal(404);
     res._json.should.deepEqual({
       error: true,
@@ -149,15 +134,15 @@ describe('middleware()', () => {
       '/a': {
         get: () => {}
       }
-    }
+    };
     const req = {
       url: '/invalid/route',
       method: 'GET'
-    }
-    const res = new Response();
+    };
+    const res = utils.Response();
     const next = () => {};
 
-    middleware(routes, {
+    Router(routes).middleware({
       messageNotFound: 'Custom message.',
       nameNotFound: 'custom_name'
     })(req, res, next);
@@ -171,15 +156,15 @@ describe('middleware()', () => {
       '/a': {
         get: () => {}
       }
-    }
+    };
     const req = {
       url: '/invalid/route',
       method: 'GET'
-    }
-    const res = new Response();
+    };
+    const res = utils.Response();
     const next = () => {};
 
-    middleware(routes, {
+    Router(routes).middleware({
       next: true
     })(req, res, (err) => {
       err.message.should.equal('Not found.');
@@ -196,15 +181,15 @@ describe('middleware()', () => {
       '/a': {
         get: () => {}
       }
-    }
+    };
     const req = {
       url: '/a',
       method: 'POST'
-    }
-    const res = new Response();
+    };
+    const res = utils.Response();
     const next = () => {};
 
-    middleware(routes, {
+    Router(routes).middleware({
       next: true
     })(req, res, (err) => {
       err.message.should.equal('Method not allowed.');

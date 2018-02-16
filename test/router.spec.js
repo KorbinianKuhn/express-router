@@ -1,29 +1,8 @@
-const should = require('should');
-const router = require('../src/router');
+const Router = require('../src/router').RouterFactory;
+const utils = require('./utils');
+const Endpoint = require('../src/endpoint').EndpointFactory;
 
-class App {
-  constructor() {
-    this.routes = {
-      get: {},
-      post: {}
-    };
-  }
-
-  get(route, middleware, controller) {
-    this.routes.get[route] = {
-      middleware,
-      controller
-    };
-  }
-
-  post(route, middleware, controller) {
-    this.routes.post[route] = {
-      middleware,
-      controller
-    };
-  }
-}
-describe('router()', () => {
+describe('Router()', () => {
   it('should add correct routes', () => {
     const controller = () => {};
     const routes = {
@@ -34,9 +13,9 @@ describe('router()', () => {
         get: controller,
         post: controller
       }
-    }
-    const app = new App();
-    router(app, routes, {
+    };
+    const app = utils.App();
+    Router(routes).create(app, {
       asyncWrapper: false
     });
 
@@ -55,9 +34,9 @@ describe('router()', () => {
       '/a': {
         get: controller
       },
-    }
-    const app = new App();
-    router(app, routes, middleware, {
+    };
+    const app = utils.App();
+    Router(routes).create(app, middleware, {
       asyncWrapper: false
     });
 
@@ -72,9 +51,9 @@ describe('router()', () => {
       '/a': {
         get: controller
       },
-    }
-    const app = new App();
-    router(app, routes);
+    };
+    const app = utils.App();
+    Router(routes).create(app);
 
     app.routes.get.should.have.property('/a');
     app.routes.get['/a'].controller.should.not.equal(controller);
@@ -85,20 +64,40 @@ describe('router()', () => {
     let verbosed = '';
     const verbose = (text) => {
       verbosed += text;
-    }
+    };
     const routes = {
       '/a': {
         get: controller
       },
-    }
-    const app = new App();
-    router(app, routes, {
-      verbose: verbose,
+    };
+    const app = utils.App();
+    Router(routes).create(app, {
+      verbose,
       asyncWrapper: false
     });
 
     app.routes.get.should.have.property('/a');
     app.routes.get['/a'].controller.should.equal(controller);
-    verbosed.should.equal('express-router: add routes/a GET')
+    verbosed.should.equal('express-router: add routes/a GET');
+  });
+
+  describe.skip('toObject()', () => {
+    it('should return routes as object', () => {
+      const controller = () => {};
+      const routes = {
+        '/users': {
+          get: Endpoint(controller).description('List all users').response({ 200: 'Success' })
+        },
+      };
+      const metadata = {
+        title: 'Automatic RAML',
+        version: 'v1',
+        baseUri: 'https://api.example.com/{version}',
+        mediaType: 'application/json',
+      };
+      const errors = [{ 400: 'Bad Request' }, { 401: 'Unauthorized' }, { 403: 'Forbidden' }, { 500: 'Internal Server Error' }];
+      const object = Router(routes).metadata(metadata).errors(errors).toObject();
+      console.log(JSON.stringify(object, 2));
+    });
   });
 });

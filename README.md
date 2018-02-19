@@ -50,17 +50,19 @@ const routes = {
 Create the endpoints
 
 ``` javascript
-const router = require('@korbiniankuhn/express-router');
+const { Router } = require('@korbiniankuhn/express-router');
 const express = require('express');
 const app = express();
 
-router.create(app, routes);
+const router = Router();
+
+router.create(app);
 ```
 
 Add the 404, 405 middleware
 
 ``` javascript
-app.use(router.middleware(routes));
+app.use(router.middleware());
 ```
 
 ## Settings

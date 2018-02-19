@@ -39,7 +39,7 @@ class Router {
     return this;
   }
 
-  errors(errors) {
+  errors(...errors) {
     this[_private].errors.push(...errors);
     return this;
   }
@@ -55,7 +55,7 @@ class Router {
     if (this[_private].errors.length > 0) {
       endpointOptions.errors = this[_private].errors;
     }
-
+    
     for (const route in this[_private].routes) {
       for (const method in this[_private].routes[route]) {
         const endpoint = this[_private].routes[route][method];

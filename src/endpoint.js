@@ -65,7 +65,7 @@ class Endpoint {
     if (this[_private].request) {
       let request;
       if (_.isFunction(this[_private].request)) {
-        request = this[_private].request();
+        request = this[_private].request(options);
         if (!_.isPlainObject(request)) throw new Error('request function does not return plain object');
       } else {
         request = _.clone(this[_private].request);
@@ -84,7 +84,7 @@ class Endpoint {
       endpointResponses.map((o) => {
         let response;
         if (_.isFunction(o)) {
-          response = o();
+          response = o(options);
           if (!_.isPlainObject(response)) throw new Error('response function does not return plain object');
         } else {
           response = _.clone(o);
@@ -101,7 +101,7 @@ class Endpoint {
       this[_private].security.map((o) => {
         let schema;
         if (_.isFunction(o)) {
-          schema = o();
+          schema = o(options);
           if (!_.isPlainObject(schema)) throw new Error('security function does not return plain object');
         } else {
           schema = _.clone(o);
@@ -112,7 +112,7 @@ class Endpoint {
 
       object.securedBy = securitySchemes;
     }
-
+    
     return object;
   }
 }

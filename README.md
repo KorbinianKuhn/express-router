@@ -1,5 +1,7 @@
 # Express router
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/KorbinianKuhn/express-router.svg)](https://greenkeeper.io/)
+
 [![Travis](https://img.shields.io/travis/KorbinianKuhn/express-router.svg?style=flat-square)](https://travis-ci.org/KorbinianKuhn/express-router/builds)
 [![Coverage](http://img.shields.io/coveralls/KorbinianKuhn/express-router.svg?style=flat-square&branch=master)](https://coveralls.io/r/KorbinianKuhn/express-router)
 [![Known Vulnerabilities](https://snyk.io/test/github/KorbinianKuhn/express-router/badge.svg?style=flat-square)](https://snyk.io/test/github/KorbinianKuhn/express-router)

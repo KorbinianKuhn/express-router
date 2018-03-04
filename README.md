@@ -1,7 +1,5 @@
 # Express router
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/KorbinianKuhn/express-router.svg)](https://greenkeeper.io/)
-
 [![Travis](https://img.shields.io/travis/KorbinianKuhn/express-router.svg?style=flat-square)](https://travis-ci.org/KorbinianKuhn/express-router/builds)
 [![Coverage](http://img.shields.io/coveralls/KorbinianKuhn/express-router.svg?style=flat-square&branch=master)](https://coveralls.io/r/KorbinianKuhn/express-router)
 [![Known Vulnerabilities](https://snyk.io/test/github/KorbinianKuhn/express-router/badge.svg?style=flat-square)](https://snyk.io/test/github/KorbinianKuhn/express-router)
@@ -9,6 +7,7 @@
 [![Dev Dependencies](https://img.shields.io/david/dev/KorbinianKuhn/express-router.svg?style=flat-square)](https://david-dm.org/KorbinianKuhn/express-router)
 [![npm](https://img.shields.io/npm/dt/@korbiniankuhn/express-router.svg?style=flat-square)](https://www.npmjs.com/package/@korbiniankuhn/express-router)
 [![npm-version](https://img.shields.io/npm/v/@korbiniankuhn/express-router.svg?style=flat-square)](https://www.npmjs.com/package/@korbiniankuhn/express-router)
+[![Greenkeeper badge](https://badges.greenkeeper.io/KorbinianKuhn/express-router.svg?style=flat-square)](https://greenkeeper.io/)
 ![license](https://img.shields.io/github/license/KorbinianKuhn/express-router.svg?style=flat-square)
 
 Build REST API endpoints for Express dynamically. The middleware sends automated 404 and 405 responses with endpoint / allowed methods suggestions. The routes and controllers can easily be described with an object. It also validates the given object against duplicate endpoints and missing controller functions.

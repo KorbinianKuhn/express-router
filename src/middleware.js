@@ -1,8 +1,5 @@
 const _ = require('lodash');
-const {
-  NotFoundError,
-  MethodNotAllowedError
-} = require('./error');
+const { NotFoundError, MethodNotAllowedError } = require('./error');
 
 module.exports = (routes, options = {}) => {
   const allRoutes = [];
@@ -37,15 +34,25 @@ module.exports = (routes, options = {}) => {
       }
 
       if (i === length - 1) {
-        possibleMethods = _.flatten(possibleRoutes.filter(o => o.params.length === 0).map(o => _.keys(o.methods).map(key => key.toUpperCase())));
+        possibleMethods = _.flatten(
+          possibleRoutes
+            .filter(o => o.params.length === 0)
+            .map(o => _.keys(o.methods).map(key => key.toUpperCase()))
+        );
       }
     }
 
     if (_.isEmpty(possibleMethods)) {
-      const requested = req.url === '' ? `'' (GET)` : `${req.url} (${req.method})`;
+      const requested =
+        req.url === '' ? `'' (GET)` : `${req.url} (${req.method})`;
       const message = options.messageNotFound;
       const valid = validRoute;
-      const endpoints = possibleRoutes.map(o => `${o.route} (${_.keys(o.methods).map(m => _.upperCase(m)).join(',')})`);
+      const endpoints = possibleRoutes.map(
+        o =>
+          `${o.route} (${_.keys(o.methods)
+            .map(m => _.upperCase(m))
+            .join(',')})`
+      );
 
       res.status(404).json({
         error: true,
@@ -57,11 +64,13 @@ module.exports = (routes, options = {}) => {
       });
 
       if (options.next) {
-        next(new NotFoundError(message, {
-          requested,
-          valid,
-          endpoints
-        }));
+        next(
+          new NotFoundError(message, {
+            requested,
+            valid,
+            endpoints
+          })
+        );
       }
     } else {
       const requested = req.method;
@@ -77,10 +86,12 @@ module.exports = (routes, options = {}) => {
       });
 
       if (options.next) {
-        next(new MethodNotAllowedError(message, {
-          requested,
-          allowed
-        }));
+        next(
+          new MethodNotAllowedError(message, {
+            requested,
+            allowed
+          })
+        );
       }
     }
   };

@@ -4,9 +4,11 @@
   "description": "Create express routes dynamically and send descriptive 404, 405 responses.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha \"./test/**/*.spec.js\"",
-    "coverage": "nyc --reporter=html mocha \"./test/**/*.spec.js\"",
-    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint *.js src/** test/**",
+    "lint:fix": "eslint *.js src/** test/** --fix",
+    "precommit": "npm audit && lint-staged && npm test"
   },
   "repository": {
     "type": "git",
@@ -24,17 +26,23 @@
   },
   "homepage": "https://github.com/KorbinianKuhn/express-router#readme",
   "dependencies": {
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.10"
   },
   "devDependencies": {
-    "coveralls": "^3.0.0",
-    "mocha": "^5.0.0",
-    "nyc": "^11.4.1",
-    "should": "^13.2.1",
-    "eslint": "^4.15.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.5.1"
+    "coveralls": "^3.0.2",
+    "eslint": "^5.2.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.1",
+    "jest": "^23.2.0",
+    "moment": "^2.22.2",
+    "prettier": "^1.13.7",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint",
+      "git add"
+    ]
   }
 }

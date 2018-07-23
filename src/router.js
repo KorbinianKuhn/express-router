@@ -27,11 +27,19 @@ class Router {
         middleware = defaults.middleware;
         break;
     }
-    createFunction(app, this[_private].routes, middleware, _.defaults(options, defaults.ROUTING_OPTIONS));
+    createFunction(
+      app,
+      this[_private].routes,
+      middleware,
+      _.defaults(options, defaults.ROUTING_OPTIONS)
+    );
   }
 
   middleware(options = {}) {
-    return middlewareFunction(this[_private].routes, _.defaults(options, defaults.MIDDLEWARE_OPTIONS));
+    return middlewareFunction(
+      this[_private].routes,
+      _.defaults(options, defaults.MIDDLEWARE_OPTIONS)
+    );
   }
 
   metadata(object) {
@@ -55,13 +63,13 @@ class Router {
     if (this[_private].errors.length > 0) {
       endpointOptions.errors = this[_private].errors;
     }
-    
+
     for (const route in this[_private].routes) {
       for (const method in this[_private].routes[route]) {
         const endpoint = this[_private].routes[route][method];
         const routeObject = {
           uri: route,
-          method,
+          method
         };
         _.assign(routeObject, endpoint.toObject(endpointOptions));
         object.routes.push(routeObject);

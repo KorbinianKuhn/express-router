@@ -1,7 +1,5 @@
 const _ = require('lodash');
-const {
-  wrap
-} = require('./defaults');
+const { wrap } = require('./defaults');
 
 module.exports = (app, routes, middleware, options = {}) => {
   if (options.verbose) options.verbose(`express-router: add routes`);
@@ -11,7 +9,8 @@ module.exports = (app, routes, middleware, options = {}) => {
       const fn = options.asyncWrapper ? wrap(controller) : controller;
       app[method](endpoint, middleware, fn);
 
-      if (options.verbose) options.verbose(`${endpoint} ${_.upperCase(method)}`);
+      if (options.verbose)
+        options.verbose(`${endpoint} ${_.upperCase(method)}`);
     }
   }
 };

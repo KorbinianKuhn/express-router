@@ -1,4 +1,3 @@
-const should = require('should');
 const utils = require('./utils');
 const Router = require('../src/router').RouterFactory;
 
@@ -17,8 +16,9 @@ describe('middleware()', () => {
     const next = () => {};
 
     Router(routes).middleware()(req, res, next);
-    res._status.should.equal(404);
-    res._json.should.deepEqual({
+
+    expect(res._status).toEqual(404);
+    expect(res._json).toEqual({
       error: true,
       name: 'not_found',
       message: 'Not found.',
@@ -51,8 +51,8 @@ describe('middleware()', () => {
     const next = () => {};
 
     Router(routes).middleware()(req, res, next);
-    res._status.should.equal(404);
-    res._json.should.deepEqual({
+    expect(res._status).toEqual(404);
+    expect(res._json).toEqual({
       error: true,
       name: 'not_found',
       message: 'Not found.',
@@ -86,8 +86,9 @@ describe('middleware()', () => {
     const next = () => {};
 
     Router(routes).middleware()(req, res, next);
-    res._status.should.equal(405);
-    res._json.should.deepEqual({
+
+    expect(res._status).toEqual(405);
+    expect(res._json).toEqual({
       error: true,
       name: 'method_not_allowed',
       message: 'Method not allowed.',
@@ -118,8 +119,9 @@ describe('middleware()', () => {
     const next = () => {};
 
     Router(routes).middleware()(req, res, next);
-    res._status.should.equal(404);
-    res._json.should.deepEqual({
+
+    expect(res._status).toEqual(404);
+    expect(res._json).toEqual({
       error: true,
       name: 'not_found',
       message: 'Not found.',
@@ -146,9 +148,12 @@ describe('middleware()', () => {
       messageNotFound: 'Custom message.',
       nameNotFound: 'custom_name'
     })(req, res, next);
-    res._status.should.equal(404);
-    res._json.should.have.property('message', 'Custom message.');
-    res._json.should.have.property('name', 'custom_name');
+
+    expect(res._status).toEqual(404);
+    expect(res._json).toMatchObject({
+      message: 'Custom message.',
+      name: 'custom_name'
+    });
   });
 
   it('should next error', () => {
@@ -162,16 +167,16 @@ describe('middleware()', () => {
       method: 'GET'
     };
     const res = utils.Response();
-    const next = () => {};
-
     Router(routes).middleware({
       next: true
-    })(req, res, (err) => {
-      err.message.should.equal('Not found.');
-      err.details.should.deepEqual({
-        requested: '/invalid/route (GET)',
-        valid: '',
-        endpoints: ['/a (GET)']
+    })(req, res, err => {
+      expect(err).toMatchObject({
+        message: 'Not found.',
+        details: {
+          requested: '/invalid/route (GET)',
+          valid: '',
+          endpoints: ['/a (GET)']
+        }
       });
     });
   });
@@ -187,15 +192,16 @@ describe('middleware()', () => {
       method: 'POST'
     };
     const res = utils.Response();
-    const next = () => {};
 
     Router(routes).middleware({
       next: true
-    })(req, res, (err) => {
-      err.message.should.equal('Method not allowed.');
-      err.details.should.deepEqual({
-        requested: 'POST',
-        allowed: 'GET'
+    })(req, res, err => {
+      expect(err).toMatchObject({
+        message: 'Method not allowed.',
+        details: {
+          requested: 'POST',
+          allowed: 'GET'
+        }
       });
     });
   });

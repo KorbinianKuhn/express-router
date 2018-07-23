@@ -2,4 +2,7 @@ coverage
 example
 test
 .travis.yml
-.editorconfig
+.gitignore
+.eslintrc
+.prettierrc
+README.md

@@ -1,58 +1,61 @@
-const should = require('should');
-const {
-  isFunctionOrPlainObject,
-  EndpointFactory
-} = require('../src/endpoint');
-const utils = require('./utils');
+const { isFunctionOrPlainObject, EndpointFactory } = require('../src/endpoint');
 
 describe('endpoint', () => {
   describe('isFunctionOrPlainObject()', () => {
     it('string should throw', () => {
-      utils.test.throw('must be function or plain object', isFunctionOrPlainObject, 'string', false);
+      expect(() => {
+        isFunctionOrPlainObject('string', false);
+      }).toThrowError('must be function or plain object');
     });
 
     it('array should throw', () => {
-      utils.test.throw('must be function or plain object', isFunctionOrPlainObject, [], false);
+      expect(() => {
+        isFunctionOrPlainObject([], false);
+      }).toThrowError('must be function or plain object');
     });
 
     it('object should verify', () => {
       const expected = {};
       const actual = isFunctionOrPlainObject(expected, false);
-      actual.should.deepEqual(expected);
+      expect(actual).toEqual(expected);
     });
 
     it('function should verify', () => {
       const expected = () => {};
       const actual = isFunctionOrPlainObject(expected, false);
-      actual.should.equal(expected);
+      expect(actual).toEqual(expected);
     });
 
     it('array of objects should verify', () => {
       const expected = [{}, {}];
       const actual = isFunctionOrPlainObject(expected, true);
-      actual.should.deepEqual(expected);
+      expect(actual).toEqual(expected);
     });
 
     it('array of functions should verify', () => {
       const expected = [() => {}, () => {}];
       const actual = isFunctionOrPlainObject(expected, true);
-      actual.should.deepEqual(expected);
+      expect(actual).toEqual(expected);
     });
 
     it('mixed array should verify', () => {
       const expected = [{}, () => {}];
       const actual = isFunctionOrPlainObject(expected, true);
-      actual.should.deepEqual(expected);
+      expect(actual).toEqual(expected);
     });
 
     it('array with string should throw', () => {
-      utils.test.throw('must be function or plain object', isFunctionOrPlainObject, ['test'], true);
+      expect(() => {
+        isFunctionOrPlainObject(['test'], true);
+      }).toThrowError('must be function or plain object');
     });
   });
 
   describe('EndpointFactory()', () => {
     it('wrong controller function should throw', () => {
-      utils.test.throw('must be function', EndpointFactory, 'invalid');
+      expect(() => {
+        EndpointFactory('invalid');
+      }).toThrowError('must be function');
     });
 
     it('correct controller function should verify', () => {
@@ -80,8 +83,14 @@ describe('endpoint', () => {
       const security = {
         oauth2: 'OAuth2'
       };
-      const endpoint = EndpointFactory(controller, request, [response], [security]).toObject();
-      endpoint.should.deepEqual({
+      const endpoint = EndpointFactory(
+        controller,
+        request,
+        [response],
+        [security]
+      ).toObject();
+
+      expect(endpoint).toEqual({
         responses: { 200: { description: 'Success' } },
         uriParameters: { userid: 'Id of user' },
         securedBy: { oauth2: 'OAuth2' }

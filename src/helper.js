@@ -1,7 +1,5 @@
 const _ = require('lodash');
-const {
-  EndpointFactory
-} = require('./endpoint');
+const { EndpointFactory } = require('./endpoint');
 
 const METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 
@@ -13,19 +11,27 @@ const transformToEndpoint = (route, method, endpoint) => {
     return endpoint;
   }
 
-  throw new Error(`endpoint '${route} ${_.upperCase(method)}' has no function or endpoint object.`);
+  throw new Error(
+    `endpoint '${route} ${_.upperCase(
+      method
+    )}' has no function or endpoint object.`
+  );
 };
 
-const validateRoute = (string) => {
+const validateRoute = string => {
   const parts = string.split('/');
   parts.shift();
   for (const part of parts) {
     if (_.startsWith(part, ':')) {
       if (part.match(/^:\w+$/) === null) {
-        throw new Error(`'/${part}' contains other characters than (a-z, A-Z, 0-9, _).`);
+        throw new Error(
+          `'/${part}' contains other characters than (a-z, A-Z, 0-9, _).`
+        );
       }
     } else if (part.match(/^[a-z0-9-/]+$/) === null) {
-      throw new Error(`'/${part}' contains other characters than (a-z, 0-9, -).`);
+      throw new Error(
+        `'/${part}' contains other characters than (a-z, 0-9, -).`
+      );
     }
   }
 };

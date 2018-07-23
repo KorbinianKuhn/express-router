@@ -4,6 +4,7 @@ node_js:
   - 7
   - 8
   - 9
+  - 10
 
 before_install:
 - '[[ $(node -v) =~ ^v9.*$ ]] || npm install -g npm@latest'
@@ -14,7 +15,8 @@ before_script:
 - npm install
 
 script:
-- npm run coveralls
+- npm run lint
+- npm run test:coverage
 
 after_script: 
 - greenkeeper-lockfile-upload

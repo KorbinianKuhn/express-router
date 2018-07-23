@@ -1,7 +1,4 @@
-const {
-  middleware,
-  wrap
-} = require('../src/defaults');
+const { middleware, wrap } = require('../src/defaults');
 
 describe('defaults', () => {
   it('default middleware should next', () => {
@@ -9,17 +6,17 @@ describe('defaults', () => {
     middleware(null, null, () => {
       executed = true;
     });
-    executed.should.be.ok();
+    expect(executed).toBe(true);
   });
 
   it('wrap function should catch exception', async () => {
-    const throwFunction = async (req, res, next) => {
+    const throwFunction = async () => {
       throw 'test';
     };
     let error = null;
-    await wrap(throwFunction)(null, null, (err) => {
+    await wrap(throwFunction)(null, null, err => {
       error = err;
     });
-    error.should.equal('test');
+    expect(error).toEqual('test');
   });
 });

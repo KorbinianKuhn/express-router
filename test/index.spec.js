@@ -4,7 +4,7 @@ const Router = require('../src/router').RouterFactory;
 describe('index.js', () => {
   it('should load correctly', () => {
     const lib = require('../index');
-    lib.Router.should.equal(Router);
-    lib.Endpoint.should.equal(Endpoint);
+    expect(lib.Router).toEqual(Router);
+    expect(lib.Endpoint).toEqual(Endpoint);
   });
 });

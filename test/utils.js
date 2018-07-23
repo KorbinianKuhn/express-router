@@ -1,22 +1,3 @@
-const shouldThrow = (message, func, ...params) => {
-  let error;
-  try {
-    func(...params);
-  } catch (err) {
-    error = err;
-  }
-
-  if (error === null) {
-    throw new Error('Did not throw');
-  }
-
-  error.message.should.equal(message);
-};
-
-exports.test = {
-  throw: shouldThrow
-};
-
 class Response {
   status(number) {
     this._status = number;

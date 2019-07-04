@@ -29,15 +29,15 @@
     "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "coveralls": "^3.0.2",
-    "eslint": "^5.7.0",
-    "eslint-config-prettier": "^3.1.0",
-    "eslint-plugin-prettier": "^3.0.0",
-    "jest": "^23.6.0",
-    "moment": "^2.22.2",
-    "prettier": "^1.14.3",
-    "husky": "^1.1.2",
-    "lint-staged": "^7.3.0"
+    "coveralls": "^3.0.4",
+    "eslint": "^6.0.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.8.0",
+    "moment": "^2.24.0",
+    "prettier": "^1.18.2",
+    "husky": "^3.0.0",
+    "lint-staged": "^9.0.2"
   },
   "lint-staged": {
     "*.js": [

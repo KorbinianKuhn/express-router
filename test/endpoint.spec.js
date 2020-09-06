@@ -72,16 +72,16 @@ describe('endpoint', () => {
       const controller = () => {};
       const request = {
         uriParameters: {
-          userid: 'Id of user'
-        }
+          userid: 'Id of user',
+        },
       };
       const response = () => ({
         200: {
-          description: 'Success'
-        }
+          description: 'Success',
+        },
       });
       const security = {
-        oauth2: 'OAuth2'
+        oauth2: 'OAuth2',
       };
       const endpoint = EndpointFactory(
         controller,
@@ -93,7 +93,7 @@ describe('endpoint', () => {
       expect(endpoint).toEqual({
         responses: { 200: { description: 'Success' } },
         uriParameters: { userid: 'Id of user' },
-        securedBy: { oauth2: 'OAuth2' }
+        securedBy: { oauth2: 'OAuth2' },
       });
     });
   });

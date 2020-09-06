@@ -1,4 +1,12 @@
-const _ = require('lodash');
+const {
+  compact,
+  cloneDeep,
+  startsWith,
+  keys,
+  flatten,
+  isEmpty,
+  upperCase,
+} = require('lodash');
 const { NotFoundError, MethodNotAllowedError } = require('./error');
 
 module.exports = (routes, options = {}) => {
@@ -6,14 +14,14 @@ module.exports = (routes, options = {}) => {
   for (const key in routes) {
     allRoutes.push({
       route: key,
-      params: _.compact(key.split('/')),
-      methods: routes[key]
+      params: compact(key.split('/')),
+      methods: routes[key],
     });
   }
 
   const middleware = (req, res, next) => {
-    const params = _.compact(req.url.split('/'));
-    let possibleRoutes = _.cloneDeep(allRoutes);
+    const params = compact(req.url.split('/'));
+    let possibleRoutes = cloneDeep(allRoutes);
     let possibleMethods = {};
     let validRoute = '';
     const length = params.length;
@@ -21,7 +29,7 @@ module.exports = (routes, options = {}) => {
       const param = params[i];
       const remainingRoutes = [];
       for (const route of possibleRoutes) {
-        if (_.startsWith(route.params[0], '/:') || route.params[0] === param) {
+        if (startsWith(route.params[0], '/:') || route.params[0] === param) {
           route.params.shift();
           remainingRoutes.push(route);
         }
@@ -34,23 +42,23 @@ module.exports = (routes, options = {}) => {
       }
 
       if (i === length - 1) {
-        possibleMethods = _.flatten(
+        possibleMethods = flatten(
           possibleRoutes
-            .filter(o => o.params.length === 0)
-            .map(o => _.keys(o.methods).map(key => key.toUpperCase()))
+            .filter((o) => o.params.length === 0)
+            .map((o) => keys(o.methods).map((key) => key.toUpperCase()))
         );
       }
     }
 
-    if (_.isEmpty(possibleMethods)) {
+    if (isEmpty(possibleMethods)) {
       const requested =
         req.url === '' ? `'' (GET)` : `${req.url} (${req.method})`;
       const message = options.messageNotFound;
       const valid = validRoute;
       const endpoints = possibleRoutes.map(
-        o =>
-          `${o.route} (${_.keys(o.methods)
-            .map(m => _.upperCase(m))
+        (o) =>
+          `${o.route} (${keys(o.methods)
+            .map((m) => upperCase(m))
             .join(',')})`
       );
 
@@ -60,7 +68,7 @@ module.exports = (routes, options = {}) => {
         name: options.nameNotFound,
         requested,
         valid,
-        endpoints
+        endpoints,
       });
 
       if (options.next) {
@@ -68,7 +76,7 @@ module.exports = (routes, options = {}) => {
           new NotFoundError(message, {
             requested,
             valid,
-            endpoints
+            endpoints,
           })
         );
       }
@@ -82,14 +90,14 @@ module.exports = (routes, options = {}) => {
         message,
         name: options.nameMethodNotAllowed,
         requested,
-        allowed
+        allowed,
       });
 
       if (options.next) {
         next(
           new MethodNotAllowedError(message, {
             requested,
-            allowed
+            allowed,
           })
         );
       }

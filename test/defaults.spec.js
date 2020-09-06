@@ -14,7 +14,7 @@ describe('defaults', () => {
       throw 'test';
     };
     let error = null;
-    await wrap(throwFunction)(null, null, err => {
+    await wrap(throwFunction)(null, null, (err) => {
       error = err;
     });
     expect(error).toEqual('test');

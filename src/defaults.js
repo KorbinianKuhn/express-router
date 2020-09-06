@@ -4,19 +4,19 @@ exports.MIDDLEWARE_OPTIONS = {
   nameNotFound: 'not_found',
   messageMethodNotAllowed: 'Method not allowed.',
   nameMethodNotAllowed: 'method_not_allowed',
-  strict: true
+  strict: true,
 };
 
 exports.ROUTING_OPTIONS = {
   asyncWrapper: true,
   verbose: null,
-  strict: true
+  strict: true,
 };
 
 exports.middleware = (req, res, next) => {
   next();
 };
 
-exports.wrap = fn => (req, res, next) => {
+exports.wrap = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };

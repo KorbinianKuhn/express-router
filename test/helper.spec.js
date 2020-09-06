@@ -7,33 +7,33 @@ describe('helper()', () => {
       const fn = () => {};
       const routes = {
         '/a': {
-          get: EndpointFactory(fn)
+          get: EndpointFactory(fn),
         },
         '/b/c': {
-          put: EndpointFactory(fn)
+          put: EndpointFactory(fn),
         },
         '/c': {
           post: EndpointFactory(fn),
           '/d': {
             delete: EndpointFactory(fn),
-            patch: EndpointFactory(fn)
-          }
-        }
+            patch: EndpointFactory(fn),
+          },
+        },
       };
       const expected = {
         '/a': {
-          get: EndpointFactory(fn)
+          get: EndpointFactory(fn),
         },
         '/b/c': {
-          put: EndpointFactory(fn)
+          put: EndpointFactory(fn),
         },
         '/c': {
-          post: EndpointFactory(fn)
+          post: EndpointFactory(fn),
         },
         '/c/d': {
           delete: EndpointFactory(fn),
-          patch: EndpointFactory(fn)
-        }
+          patch: EndpointFactory(fn),
+        },
       };
       const actual = helper.transform(routes);
       expect(actual).toEqual(expected);
@@ -46,7 +46,7 @@ describe('helper()', () => {
 
       expect(() => {
         helper.transform({
-          '/a': null
+          '/a': null,
         });
       }).toThrowError(`route '/a' is not an object.`);
     });
@@ -58,7 +58,7 @@ describe('helper()', () => {
 
       expect(() => {
         helper.transform({
-          '/a': {}
+          '/a': {},
         });
       }).toThrowError(`route '/a' has an empty object.`);
     });
@@ -67,16 +67,16 @@ describe('helper()', () => {
       expect(() => {
         helper.transform({
           '/a': {
-            get: null
-          }
+            get: null,
+          },
         });
       }).toThrowError(`endpoint '/a GET' has no function or endpoint object.`);
 
       expect(() => {
         helper.transform({
           '/a': {
-            get: {}
-          }
+            get: {},
+          },
         });
       }).toThrowError(`endpoint '/a GET' has no function or endpoint object.`);
     });
@@ -86,12 +86,12 @@ describe('helper()', () => {
         helper.transform({
           '/a': {
             '/b': {
-              get: () => {}
-            }
+              get: () => {},
+            },
           },
           '/a/b': {
-            get: () => {}
-          }
+            get: () => {},
+          },
         });
       }).toThrowError(`endpoint '/a/b' is a duplicate.`);
     });
@@ -100,8 +100,8 @@ describe('helper()', () => {
       expect(() => {
         helper.transform({
           test: {
-            get: () => {}
-          }
+            get: () => {},
+          },
         });
       }).toThrowError(`'test' has no leading slash.`);
     });
@@ -111,11 +111,11 @@ describe('helper()', () => {
         helper.transform(
           {
             '/te.st': {
-              get: () => {}
-            }
+              get: () => {},
+            },
           },
           {
-            strict: true
+            strict: true,
           }
         );
       }).toThrowError(`'/te.st' contains other characters than (a-z, 0-9, -).`);
@@ -126,11 +126,11 @@ describe('helper()', () => {
         helper.transform(
           {
             '/TEST': {
-              get: () => {}
-            }
+              get: () => {},
+            },
           },
           {
-            strict: true
+            strict: true,
           }
         );
       }).toThrowError(`'/TEST' contains other characters than (a-z, 0-9, -).`);
@@ -141,11 +141,11 @@ describe('helper()', () => {
         helper.transform(
           {
             '/:test-b': {
-              get: () => {}
-            }
+              get: () => {},
+            },
           },
           {
-            strict: true
+            strict: true,
           }
         );
       }).toThrowError(

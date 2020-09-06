@@ -15,21 +15,21 @@ class App {
   constructor() {
     this.routes = {
       get: {},
-      post: {}
+      post: {},
     };
   }
 
   get(route, middleware, controller) {
     this.routes.get[route] = {
       middleware,
-      controller
+      controller,
     };
   }
 
   post(route, middleware, controller) {
     this.routes.post[route] = {
       middleware,
-      controller
+      controller,
     };
   }
 }

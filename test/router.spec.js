@@ -7,26 +7,26 @@ describe('Router()', () => {
     const controller = () => {};
     const routes = {
       '/a': {
-        get: controller
+        get: controller,
       },
       '/b': {
         get: controller,
-        post: controller
-      }
+        post: controller,
+      },
     };
     const app = utils.App();
     Router(routes).create(app, {
-      asyncWrapper: false
+      asyncWrapper: false,
     });
 
     expect(app.routes).toMatchObject({
       get: {
         '/a': { controller },
-        '/b': { controller }
+        '/b': { controller },
       },
       post: {
-        '/b': { controller }
-      }
+        '/b': { controller },
+      },
     });
   });
 
@@ -35,21 +35,21 @@ describe('Router()', () => {
     const middleware = () => {};
     const routes = {
       '/a': {
-        get: controller
-      }
+        get: controller,
+      },
     };
     const app = utils.App();
     Router(routes).create(app, middleware, {
-      asyncWrapper: false
+      asyncWrapper: false,
     });
 
     expect(app.routes).toMatchObject({
       get: {
         '/a': {
           controller,
-          middleware
-        }
-      }
+          middleware,
+        },
+      },
     });
   });
 
@@ -57,8 +57,8 @@ describe('Router()', () => {
     const controller = () => {};
     const routes = {
       '/a': {
-        get: controller
-      }
+        get: controller,
+      },
     };
     const app = utils.App();
     Router(routes).create(app);
@@ -69,26 +69,26 @@ describe('Router()', () => {
   it('should verbose output', () => {
     const controller = () => {};
     let verbosed = '';
-    const verbose = text => {
+    const verbose = (text) => {
       verbosed += text;
     };
     const routes = {
       '/a': {
-        get: controller
-      }
+        get: controller,
+      },
     };
     const app = utils.App();
     Router(routes).create(app, {
       verbose,
-      asyncWrapper: false
+      asyncWrapper: false,
     });
 
     expect(app.routes).toMatchObject({
       get: {
         '/a': {
-          controller
-        }
-      }
+          controller,
+        },
+      },
     });
     expect(verbosed).toEqual('express-router: add routes/a GET');
   });
@@ -100,20 +100,20 @@ describe('Router()', () => {
         '/users': {
           get: Endpoint(controller)
             .description('List all users')
-            .response({ 200: 'Success' })
-        }
+            .response({ 200: 'Success' }),
+        },
       };
       const metadata = {
         title: 'Automatic RAML',
         version: 'v1',
         baseUri: 'https://api.example.com/{version}',
-        mediaType: 'application/json'
+        mediaType: 'application/json',
       };
       const errors = [
         { 400: 'Bad Request' },
         { 401: 'Unauthorized' },
         { 403: 'Forbidden' },
-        { 500: 'Internal Server Error' }
+        { 500: 'Internal Server Error' },
       ];
       const object = Router(routes)
         .metadata(metadata)

@@ -5,12 +5,12 @@ describe('middleware()', () => {
   it('complete invalid route should return empty valid part', () => {
     const routes = {
       '/a': {
-        get: () => {}
-      }
+        get: () => {},
+      },
     };
     const req = {
       url: '/invalid/route',
-      method: 'GET'
+      method: 'GET',
     };
     const res = utils.Response();
     const next = () => {};
@@ -24,7 +24,7 @@ describe('middleware()', () => {
       message: 'Not found.',
       requested: '/invalid/route (GET)',
       valid: '',
-      endpoints: ['/a (GET)']
+      endpoints: ['/a (GET)'],
     });
   });
 
@@ -33,19 +33,19 @@ describe('middleware()', () => {
       '/a': {
         get: () => {},
         '/c': {
-          get: () => {}
+          get: () => {},
         },
         '/d/:variable': {
-          get: () => {}
-        }
+          get: () => {},
+        },
       },
       '/b': {
-        get: () => {}
-      }
+        get: () => {},
+      },
     };
     const req = {
       url: '/a/b',
-      method: 'GET'
+      method: 'GET',
     };
     const res = utils.Response();
     const next = () => {};
@@ -58,7 +58,7 @@ describe('middleware()', () => {
       message: 'Not found.',
       requested: '/a/b (GET)',
       valid: '/a',
-      endpoints: ['/a (GET)', '/a/c (GET)', '/a/d/:variable (GET)']
+      endpoints: ['/a (GET)', '/a/c (GET)', '/a/d/:variable (GET)'],
     });
   });
 
@@ -68,19 +68,19 @@ describe('middleware()', () => {
         get: () => {},
         patch: () => {},
         '/c': {
-          get: () => {}
+          get: () => {},
         },
         '/d/:variable': {
-          get: () => {}
-        }
+          get: () => {},
+        },
       },
       '/b': {
-        get: () => {}
-      }
+        get: () => {},
+      },
     };
     const req = {
       url: '/a',
-      method: 'POST'
+      method: 'POST',
     };
     const res = utils.Response();
     const next = () => {};
@@ -93,7 +93,7 @@ describe('middleware()', () => {
       name: 'method_not_allowed',
       message: 'Method not allowed.',
       requested: 'POST',
-      allowed: 'GET,PATCH'
+      allowed: 'GET,PATCH',
     });
   });
 
@@ -103,17 +103,17 @@ describe('middleware()', () => {
         get: () => {},
         post: () => {},
         '/b': {
-          patch: () => {}
-        }
+          patch: () => {},
+        },
       },
       '/c': {
         delete: () => {},
-        put: () => {}
-      }
+        put: () => {},
+      },
     };
     const req = {
       url: '',
-      method: 'GET'
+      method: 'GET',
     };
     const res = utils.Response();
     const next = () => {};
@@ -127,56 +127,56 @@ describe('middleware()', () => {
       message: 'Not found.',
       requested: `'' (GET)`,
       valid: '',
-      endpoints: ['/a (GET,POST)', '/a/b (PATCH)', '/c (DELETE,PUT)']
+      endpoints: ['/a (GET,POST)', '/a/b (PATCH)', '/c (DELETE,PUT)'],
     });
   });
 
   it('should return custom error message', () => {
     const routes = {
       '/a': {
-        get: () => {}
-      }
+        get: () => {},
+      },
     };
     const req = {
       url: '/invalid/route',
-      method: 'GET'
+      method: 'GET',
     };
     const res = utils.Response();
     const next = () => {};
 
     Router(routes).middleware({
       messageNotFound: 'Custom message.',
-      nameNotFound: 'custom_name'
+      nameNotFound: 'custom_name',
     })(req, res, next);
 
     expect(res._status).toEqual(404);
     expect(res._json).toMatchObject({
       message: 'Custom message.',
-      name: 'custom_name'
+      name: 'custom_name',
     });
   });
 
   it('should next error', () => {
     const routes = {
       '/a': {
-        get: () => {}
-      }
+        get: () => {},
+      },
     };
     const req = {
       url: '/invalid/route',
-      method: 'GET'
+      method: 'GET',
     };
     const res = utils.Response();
     Router(routes).middleware({
-      next: true
-    })(req, res, err => {
+      next: true,
+    })(req, res, (err) => {
       expect(err).toMatchObject({
         message: 'Not found.',
         details: {
           requested: '/invalid/route (GET)',
           valid: '',
-          endpoints: ['/a (GET)']
-        }
+          endpoints: ['/a (GET)'],
+        },
       });
     });
   });
@@ -184,24 +184,24 @@ describe('middleware()', () => {
   it('should next method not allowed error', () => {
     const routes = {
       '/a': {
-        get: () => {}
-      }
+        get: () => {},
+      },
     };
     const req = {
       url: '/a',
-      method: 'POST'
+      method: 'POST',
     };
     const res = utils.Response();
 
     Router(routes).middleware({
-      next: true
-    })(req, res, err => {
+      next: true,
+    })(req, res, (err) => {
       expect(err).toMatchObject({
         message: 'Method not allowed.',
         details: {
           requested: 'POST',
-          allowed: 'GET'
-        }
+          allowed: 'GET',
+        },
       });
     });
   });

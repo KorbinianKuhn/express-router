@@ -1,15 +1,23 @@
-const _ = require('lodash');
+const {
+  isPlainObject,
+  isBoolean,
+  isArray,
+  isFunction,
+  clone,
+  assign,
+  cloneDeep,
+} = require('lodash');
 
 const isFunctionOrPlainObject = (data, allowArray) => {
-  if (_.isArray(data)) {
+  if (isArray(data)) {
     if (allowArray) {
-      return data.map(o => isFunctionOrPlainObject(o, false));
+      return data.map((o) => isFunctionOrPlainObject(o, false));
     } else {
       throw new Error('must be function or plain object');
     }
   }
 
-  if (!_.isFunction(data) && !_.isPlainObject(data)) {
+  if (!isFunction(data) && !isPlainObject(data)) {
     throw new Error('must be function or plain object');
   }
 
@@ -21,7 +29,7 @@ const _private = Symbol('Private variables');
 
 class Endpoint {
   constructor(controller, request, responses, security) {
-    if (!_.isFunction(controller)) throw new Error('must be function');
+    if (!isFunction(controller)) throw new Error('must be function');
     this[_private] = {};
     this[_private].controller = controller;
     this[_private].request = request
@@ -53,11 +61,7 @@ class Endpoint {
   }
 
   security(...schemes) {
-    if (
-      schemes.length === 1 &&
-      _.isBoolean(schemes[0]) &&
-      schemes[0] === false
-    ) {
+    if (schemes.length === 1 && isBoolean(schemes[0]) && schemes[0] === false) {
       this[_private].securityEnabled = false;
     } else {
       this[_private].security.push(...isFunctionOrPlainObject(schemes, true));
@@ -73,17 +77,17 @@ class Endpoint {
 
     if (this[_private].request) {
       let request;
-      if (_.isFunction(this[_private].request)) {
+      if (isFunction(this[_private].request)) {
         request = this[_private].request(options);
-        if (!_.isPlainObject(request))
+        if (!isPlainObject(request))
           throw new Error('request function does not return plain object');
       } else {
-        request = _.clone(this[_private].request);
+        request = clone(this[_private].request);
       }
-      _.assign(object, request);
+      assign(object, request);
     }
 
-    const endpointResponses = _.cloneDeep(this[_private].responses);
+    const endpointResponses = cloneDeep(this[_private].responses);
 
     if (options.errors && options.errors.length > 0) {
       endpointResponses.push(...options.errors);
@@ -91,16 +95,16 @@ class Endpoint {
 
     if (endpointResponses.length > 0) {
       const responses = {};
-      endpointResponses.map(o => {
+      endpointResponses.map((o) => {
         let response;
-        if (_.isFunction(o)) {
+        if (isFunction(o)) {
           response = o(options);
-          if (!_.isPlainObject(response))
+          if (!isPlainObject(response))
             throw new Error('response function does not return plain object');
         } else {
-          response = _.clone(o);
+          response = clone(o);
         }
-        _.assign(responses, response);
+        assign(responses, response);
         return o;
       });
 
@@ -112,16 +116,16 @@ class Endpoint {
       this[_private].security.length > 0
     ) {
       const securitySchemes = {};
-      this[_private].security.map(o => {
+      this[_private].security.map((o) => {
         let schema;
-        if (_.isFunction(o)) {
+        if (isFunction(o)) {
           schema = o(options);
-          if (!_.isPlainObject(schema))
+          if (!isPlainObject(schema))
             throw new Error('security function does not return plain object');
         } else {
-          schema = _.clone(o);
+          schema = clone(o);
         }
-        _.assign(securitySchemes, schema);
+        assign(securitySchemes, schema);
         return o;
       });
 

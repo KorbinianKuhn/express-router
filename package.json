@@ -1,6 +1,6 @@
 {
   "name": "@korbiniankuhn/express-router",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Create express routes dynamically and send descriptive 404, 405 responses.",
   "main": "index.js",
   "scripts": {
